@@ -105,10 +105,15 @@ class @KeyPatternLogger
     @stop()
 
   _parseKey: (e) ->
-    keyCode = parseInt(e.keyIdentifier.replace("U+", "0x"), 16)
-    key = @_keys[e.keyCode] || String.fromCharCode(keyCode).toLowerCase()
-    key = "⇧".concat(key) if e.shiftKey && key != "⇧"
-    key = "⌥".concat(key) if e.altKey && key != "⌥"
-    key = "⌃".concat(key) if e.ctrlKey && key != "⌃"
-    key = "⌘".concat(key) if e.metaKey && key != "⌘"
+    if e.key # this is used in firefox and ie see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent.key
+      keyCode = e.key.toLowerCase()
+    else if e.keyIdentifier # hacky, this is used in chrome & safari
+      keyCode = parseInt(e.keyIdentifier.replace("U+", "0x"), 16)
+      keyCode = String.fromCharCode(keyCode).toLowerCase()
+
+    key = if e.key then keyCode else @_keys[e.keyCode] || keyCode # TODO e.keyCode is depreciated
+    key = "shift".concat(key) if e.shiftKey && key.indexOf("shift") == -1
+    key = "alt".concat(key) if e.altKey && key.indexOf("alt") == -1
+    key = "control".concat(key) if e.ctrlKey && key.indexOf("control") == -1
+    key = "meta".concat(key) if e.metaKey && key.indexOf("meta") == -1
     key
