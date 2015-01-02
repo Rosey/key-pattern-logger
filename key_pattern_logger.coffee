@@ -73,9 +73,9 @@ class @KeyPatternLogger
       when "keyup"
         @handleKeyup(@_parseKey(e))
 
-  handleKeyup: (key) ->
-    @keysLogged.push(key)
-    if key in @pattern
+  handleKeyup: (keyPressed) ->
+    @keysLogged.push(keyPressed)
+    if keyPressed in @pattern
       matches = true
       for key, index in @pattern
         if @keysLogged[index] != key
@@ -86,6 +86,12 @@ class @KeyPatternLogger
           # potential to with the next keyup.
           if @keysLogged[index]
             @keysLogged = []
+            # If we broke the pattern but broke it using the first key of the pattern
+            # Then we need to log that. Otherwise, if, for example, our pattern is
+            # ["a", "b", "c"], ["a", "b"] followed by the correct ["a", "b", "c"]
+            # won't match correctly
+            if keyPressed == @pattern[0]
+              @keysLogged.push keyPressed
           break
 
       if matches
@@ -101,8 +107,8 @@ class @KeyPatternLogger
   _parseKey: (e) ->
     keyCode = parseInt(e.keyIdentifier.replace("U+", "0x"), 16)
     key = @_keys[e.keyCode] || String.fromCharCode(keyCode).toLowerCase()
-    key = "⇧".concat(key) if e.shiftKey
-    key = "⌥".concat(key) if e.altKey
-    key = "⌃".concat(key) if e.ctrlKey
-    key = "⌘".concat(key) if e.metaKey
+    key = "⇧".concat(key) if e.shiftKey && key != "⇧"
+    key = "⌥".concat(key) if e.altKey && key != "⌥"
+    key = "⌃".concat(key) if e.ctrlKey && key != "⌃"
+    key = "⌘".concat(key) if e.metaKey && key != "⌘"
     key
