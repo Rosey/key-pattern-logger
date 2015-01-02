@@ -26,7 +26,7 @@ Accepts hash of parameters, `pattern` and `callback`.
   - `callback` is a method with code that you want to execute when the
     pattern occurs.
 
-_Note: Modifier keys can also be checked for, e.g. `"⌘a"`_
+_Note: Modifier keys can also be checked for, e.g. `"meta+a"`_
 
 
 If the pattern consists of multiple keys, e.g. ["a", "b", "c"] the user
