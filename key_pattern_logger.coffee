@@ -112,8 +112,8 @@ class @KeyPatternLogger
       keyCode = String.fromCharCode(keyCode).toLowerCase()
 
     key = if e.key then keyCode else @_keys[e.keyCode] || keyCode # TODO e.keyCode is depreciated
-    key = "shift".concat(key) if e.shiftKey && key.indexOf("shift") == -1
-    key = "alt".concat(key) if e.altKey && key.indexOf("alt") == -1
-    key = "control".concat(key) if e.ctrlKey && key.indexOf("control") == -1
-    key = "meta".concat(key) if e.metaKey && key.indexOf("meta") == -1
+    key = "shift+".concat(key) if e.shiftKey && key.indexOf("shift") == -1
+    key = "alt+".concat(key) if e.altKey && key.indexOf("alt") == -1
+    key = "control+".concat(key) if e.ctrlKey && key.indexOf("control") == -1
+    key = "meta+".concat(key) if e.metaKey && key.indexOf("meta") == -1
     key
