@@ -76,10 +76,10 @@
       }
     };
 
-    KeyPatternLogger.prototype.handleKeyup = function(key) {
-      var index, matches, _i, _len, _ref;
-      this.keysLogged.push(key);
-      if (__indexOf.call(this.pattern, key) >= 0) {
+    KeyPatternLogger.prototype.handleKeyup = function(keyPressed) {
+      var index, key, matches, _i, _len, _ref;
+      this.keysLogged.push(keyPressed);
+      if (__indexOf.call(this.pattern, keyPressed) >= 0) {
         matches = true;
         _ref = this.pattern;
         for (index = _i = 0, _len = _ref.length; _i < _len; index = ++_i) {
@@ -88,6 +88,9 @@
             matches = false;
             if (this.keysLogged[index]) {
               this.keysLogged = [];
+              if (keyPressed === this.pattern[0]) {
+                this.keysLogged.push(keyPressed);
+              }
             }
             break;
           }
@@ -109,19 +112,24 @@
 
     KeyPatternLogger.prototype._parseKey = function(e) {
       var key, keyCode;
-      keyCode = parseInt(e.keyIdentifier.replace("U+", "0x"), 16);
-      key = this._keys[e.keyCode] || String.fromCharCode(keyCode).toLowerCase();
-      if (e.shiftKey) {
-        key = "⇧".concat(key);
+      if (e.key) {
+        keyCode = e.key.toLowerCase();
+      } else if (e.keyIdentifier) {
+        keyCode = parseInt(e.keyIdentifier.replace("U+", "0x"), 16);
+        keyCode = String.fromCharCode(keyCode).toLowerCase();
       }
-      if (e.altKey) {
-        key = "⌥".concat(key);
+      key = e.key ? keyCode : this._keys[e.keyCode] || keyCode;
+      if (e.shiftKey && key.indexOf("shift") === -1) {
+        key = "shift+".concat(key);
       }
-      if (e.ctrlKey) {
-        key = "⌃".concat(key);
+      if (e.altKey && key.indexOf("alt") === -1) {
+        key = "alt+".concat(key);
       }
-      if (e.metaKey) {
-        key = "⌘".concat(key);
+      if (e.ctrlKey && key.indexOf("control") === -1) {
+        key = "control+".concat(key);
+      }
+      if (e.metaKey && key.indexOf("meta") === -1) {
+        key = "meta+".concat(key);
       }
       return key;
     };
