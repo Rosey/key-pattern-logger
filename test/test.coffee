@@ -13,7 +13,20 @@ describe("KeyPatternLogger", ->
     @keyPatternLogger = new kpl.KeyPatternLogger({
       pattern: ["a", "b", "c"]
     })
-  
+
+  describe("Setup", ->
+    it("Is an instance of a KeyPatternLogger", ->
+      @keyPatternLogger.should.be.instanceof(kpl.KeyPatternLogger)
+    )
+
+    it("Should have saved the pattern passed in the constructor args", ->
+      @keyPatternLogger.pattern.should.be.instanceof(Array)
+      expectedArray = ["a", "b", "c"]
+      for key, index in @keyPatternLogger.pattern
+        key.should.equal(expectedArray[index])
+    )
+  )
+
   describe("Pattern Matching", ->
     beforeEach ->
       @spy = chai.spy()
@@ -72,7 +85,7 @@ describe("KeyPatternLogger", ->
       @spy.should.not.have.been.called()
     )
 
-    it("doesn't call callback if one incorrect key is in middle of th pattern", ->
+    it("doesn't call callback if one incorrect key is in middle of the pattern", ->
       @keyPatternLogger.handleKeyup("a")
       @keyPatternLogger.handleKeyup("1")
       @keyPatternLogger.handleKeyup("b")
