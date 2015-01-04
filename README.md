@@ -43,3 +43,18 @@ fine too. The callback will be called every single time someone hits the
 If you want to stop the KeyPatternLogger from listening for matches,
 you can call `keyPatternLogger.stop()` (and start it again with
 `keyPatternLogger.start()`)
+
+
+### Running the tests
+
+Make sure dependencies are installed:
+
+```shell
+npm install -g mocha &
+npm install
+```
+
+Run with coffeescript compiler
+```shell
+mocha --compilers coffee:coffee-script/register
+```
