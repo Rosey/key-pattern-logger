@@ -29,9 +29,9 @@ class @KeyPatternLogger
     9: "tab"
     12: "clear"
     13: "enter"
-    16: "⇧"
-    17: "⌃"
-    18: "⌥"
+    16: "shift"
+    17: "control"
+    18: "alt"
     27: "esc"
     32: "space"
     37: "left"
@@ -43,8 +43,8 @@ class @KeyPatternLogger
     35: "end"
     33: "pageup"
     34: "pagedown"
-    91: "⌘"
-    93: "⌘"
+    91: "meta"
+    93: "meta"
 
   constructor: (options = {}) ->
     # normalize upper and lowercase letters so that we don’t have to
